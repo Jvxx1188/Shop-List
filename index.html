@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  
+  <body>
+    
+    <div id="app"> 
+      <h1>Lista de compras</h1>
+      
+      <div class="ButtonAddItem">
+          <label for="item">Add item : </label>
+          <input type="text" id="item">
+         <!--é a função que adiciona o item ao carrinho-->
+          <button onclick="AddItem()">Add</button>
+      </div>
+
+      <div class="carrinho">
+          <h2>Items</h2> 
+          <ul id="ShopItems">
+          </ul>
+      </div>
+
+    </div>
+   
+  <!-- <script type="module" src="/main.js"></script>-->
+
+    <script>
+      function AddItem(){
+      
+        //constante igual ao botao de compra(input).
+        const item = document.getElementById("item")
+        //variavel para lista
+        const add = document.createElement("li");
+        
+        if(!item.value == ''){
+          //variavel para lista vai pegar o valor dentro do botao
+            add.textContent = item.value;
+          //pega a classe onde esta os items e adiciona o item la dentro como filho
+            document.getElementById("ShopItems").appendChild(add);
+          //limpa o valor do botao
+            item.value = '';
+        }
+        
+      }
+
+    </script>
+  </body>
+</html>

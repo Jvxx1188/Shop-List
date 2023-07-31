@@ -1,0 +1,53 @@
+<h1>Lista de Compras</h1>
+    <div>
+      <label for="item">Item:</label>
+      <input type="text" id="item">
+      <button onclick="addItem()">Adicionar</button>
+    </div>
+    <div>
+      <h2>Itens na Lista:</h2>
+      <ul id="itemList"></ul>
+    </div>
+    <script>
+      // Lista de compras (inicialmente vazia)
+      let shoppingList = {};
+      
+      function addItem() {
+        const itemInput = document.getElementById('item');
+        const newItem = itemInput.value.trim();
+        if (newItem !== '') {
+          shoppingList[newItem] = 1;
+          itemInput.value = '';
+          updateItemList();
+        }
+      }
+  
+      function updateItemList() {
+        const itemList = document.getElementById('itemList');
+        itemList.innerHTML = '';
+        const items = Object.keys(shoppingList);
+        items.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.textContent = item;
+          itemList.appendChild(listItem);
+        });
+        saveShoppingList();
+      }
+  
+      function saveShoppingList() {
+        const shoppingListString = JSON.stringify(shoppingList);
+        // Aqui você pode salvar a string JSON em um local de armazenamento,
+        // como em um banco de dados ou localStorage.
+        console.log('Lista de compras salva como JSON: ', shoppingListString);
+      }
+  
+      // Simulando a recuperação da lista de compras a partir de um armazenamento (JSON string)
+      function loadShoppingList() {
+        const savedShoppingList = '{"Maçã":1,"Banana":1,"Leite":1}';
+        shoppingList = JSON.parse(savedShoppingList);
+        updateItemList();
+      }
+  
+      // Chamamos a função de carga para exibir a lista inicialmente.
+      loadShoppingList();
+    </script>
