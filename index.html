@@ -5,49 +5,78 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   
   <body>
-    
-    <div id="app"> 
-      <h1>Lista de compras</h1>
-      
-      <div class="ButtonAddItem">
-          <label for="item">Add item : </label>
-          <input type="text" id="item">
-         <!--é a função que adiciona o item ao carrinho-->
-          <button onclick="AddItem()">Add</button>
-      </div>
-
-      <div class="carrinho">
-          <h2>Items</h2> 
-          <ul id="ShopItems">
-          </ul>
-      </div>
-
+    <h1>Lista de Compras</h1>
+   <div class="Buttons" style="display: flex;">
+    <div id="ItemButton">
+      <label for="item">Item:</label>
+      <input type="text" id="item">
+      <button onclick="addItem()">Adicionar</button>
+    </div>
+    <div id="ResetButton">
+    <button onclick="Reset()">Reset</button>  
+    </div>
+   </div>
+   
+    <div>
+      <h2>Itens na Lista:</h2>
+      <ul id="itemList"></ul>
     </div>
    
   <!-- <script type="module" src="/main.js"></script>-->
 
     <script>
-      function AddItem(){
+     let shoppingList = {};
       
-        //constante igual ao botao de compra(input).
-        const item = document.getElementById("item")
-        //variavel para lista
-        const add = document.createElement("li");
+      function addItem() {
         
-        if(!item.value == ''){
-          //variavel para lista vai pegar o valor dentro do botao
-            add.textContent = item.value;
-          //pega a classe onde esta os items e adiciona o item la dentro como filho
-            document.getElementById("ShopItems").appendChild(add);
-          //limpa o valor do botao
-            item.value = '';
+        //
+        const itemInput = document.getElementById('item');
+        const newItem = itemInput.value.trim();
+        if (newItem !== '') {
+          shoppingList[newItem] = 1;
+          itemInput.value = '';
+          updateItemList();
         }
-        
       }
-
+  //adiciona o item e atualiza a pagina
+       function updateItemList() {
+        const itemList = document.getElementById('itemList');
+        itemList.innerHTML = '';
+        const items = Object.keys(shoppingList);
+        
+        items.forEach(item => {
+        const listItem = document.createElement('li');
+          listItem.textContent = item;
+          itemList.appendChild(listItem);
+        });
+        save();
+      }
+      //salvar o itemcatalog
+      function save(){
+      const shoppingListStringify = JSON.stringify(shoppingList);
+      localStorage.setItem("ListaDeCompras", shoppingListStringify);
+    console.log(localStorage.getItem("ListaDeCompras"));
+      }
+      //função de load
+      function LoadItems(){
+        //if (!localStorage.getItem("ListaDeCompras") == null){
+          const GetShoppingListSave= localStorage.getItem("ListaDeCompras");
+          const ShoppingListParse = JSON.parse(GetShoppingListSave);
+          shoppingList = ShoppingListParse;
+          console.log(localStorage.getItem("ListaDeCompras"));
+        //}
+     
+      updateItemList();
+    }
+    function Reset(){
+      shoppingList = {};
+      updateItemList();
+    }
+      LoadItems();
     </script>
   </body>
 </html>
